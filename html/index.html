@@ -5,6 +5,34 @@
   <link rel="stylesheet" href="mermaid.min.css">
 </head>
 <body>
+
+  <div>
+    <div><h5>音频播放</h5></div>
+    <audio controls>
+      <!-- 多个source供浏览器选择可播放格式 -->
+      <source src="resources/audio1.ogg"/>
+      <source src="resources/audio1.aac"/>
+      <source src="resources/audio1.mp3"/>
+    </audio>
+  </div>
+
+  <br/>
+  <br/>
+
+  <div>
+    <div><h5>视频播放</h5></div>
+    <video controls>
+      <!-- 多个source供浏览器选择可播放格式 -->
+      <source src="resources/video1.ogv"/>
+      <source src="resources/video1.flv"/>
+      <source src="resources/video1.mp4"/>
+    </video>
+  </div>
+
+
+  <br/>
+  <br/>
+
   <div class="mermaid">
   graph LR
       A --- B
