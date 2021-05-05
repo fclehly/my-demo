@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>My first Vue app</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+
+<body>
+    <div id="app">
+        a = {{ a }}, b = {{ b }}<br />
+        <span v-once>这个将不会改变: {{ msg }}</span>
+        <p>Using mustaches: {{ rawHtml }}</p>
+        <p>Using v-html directive: <span v-html="rawHtml"></span></p>
+        <div v-bind:class="color">test v-bind</div>
+        <div>{{ number + 1 }}</div>
+        <div>{{ ok ? 'YES' : 'NO' }}</div>
+        <div>{{ msg.split('').reverse().join('') }}</div>
+        <p v-if="seen">现在你看到我了</p>
+        <a :href="baidu">vue-address</a>
+        <div @click="click1">
+            <div @click.stop="click2">
+                click me
+            </div>
+        </div>
+        <div class="test" v-bind:class="{ active: isActive, green: isGreen }"
+            style="width:100px; height:100px; text-align: center; line-height: 100px;">
+            test style
+        </div>
+        <div class="test" v-bind:class="[ isActive ? 'active' : '', 'green' ]"
+            style="width:100px; height:100px; text-align: center; line-height: 100px;">
+            test style
+        </div>
+        <div :style="{color: color, fontSize: size, background: isRed ? '#FF0000': ''}">
+            test style
+        </div>
+        <h1 v-if="awesome">Vue is awesome!</h1>
+        <h1 v-else>Oh no 😢</h1>
+        <template v-if="ok">
+            <h1>Title</h1>
+            <p>Paragraph 1</p>
+            <p>Paragraph 2</p>
+        </template>
+        <div v-if="Math.random() > 0.5">
+            Now you see me
+        </div>
+        <div v-else>
+            Now you don't
+        </div>
+
+        <div v-if="type === 'A'">
+            A
+        </div>
+        <div v-else-if="type === 'B'">
+            B
+        </div>
+        <div v-else-if="type === 'C'">
+            C
+        </div>
+        <div v-else>
+            Not A/B/C
+        </div>
+        <h1 v-show="ok">Hello! v-show</h1>
+        <ul>
+            <li v-for="item, index in items" :key="index">
+                {{ parentMessage }} - {{ index }} - {{ item.message }}
+            </li>
+        </ul>
+        <ul>
+            <li v-for="value, name, index in obj" :key="name">
+                {{ name }}: {{ value }}: {{ index }}
+            </li>
+        </ul>
+        <div>
+            <button v-on:click="counter += 1">Add 1</button>
+            <p>The button above has been clicked {{ counter }} times.</p>
+        </div>
+        <button v-on:click="greet('abc', $event)">Greet</button>
+        <br />
+        <input v-model="message1" placeholder="edit me">
+        <p>Message is: {{ message1 }}</p>
+        <span>Multiline message is:</span>
+        <p style="white-space: pre-line;">{{ message2 }}</p>
+        <br>
+        <textarea v-model="message2" placeholder="add multiple lines"></textarea>
+        <br />
+        <input type="checkbox" v-model="checked">
+        <label for="checkbox">{{ checked }}</label>
+        <br />
+        <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
+        <label for="jack">Jack</label>
+        <input type="checkbox" id="john" value="John" v-model="checkedNames">
+        <label for="john">John</label>
+        <input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
+        <label for="mike">Mike</label>
+        <br>
+        <span>Checked names: {{ checkedNames }}</span>
+        <br>
+        <div>
+            <button-counter title="组件1: " @clicknow="clicknow"></button-counter>
+            <button-counter>
+                <h5>test slot</h5>
+            </button-counter>
+            <button-counter></button-counter>
+        </div>
+        <br>
+        <test-component1></test-component1>
+    </div>
+
+
+    <script>
+        var data = {
+            a: 1,
+            b: 2,
+            msg: "no change",
+            rawHtml: '<span style="color:red">Test<span>',
+            color: 'blue',
+            ok: true,
+            number: 10,
+            seen: true,
+            baidu: "https://www.baidu.com",
+            click1: function () {
+                console.log("click1")
+            },
+            click2: function () {
+                console.log("click2")
+            },
+            isActive: true,
+            isGreen: false,
+            isRed: true,
+            color: "#0000FF",
+            size: "20px",
+            awesome: false,
+            type: 'B',
+            parentMessage: 'Parent',
+            items: [
+                { message: 'Foo' },
+                { message: 'Bar' }
+            ],
+            obj: {
+                title: 'How to do lists in Vue',
+                author: 'Jane Doe',
+                publishedAt: '2016-04-10'
+            },
+            counter: 0,
+            message1: "1234",
+            message2: "",
+            checked: false,
+            checkedNames: []
+
+        }
+        var methods = {
+            greet: function (str, event) {
+                // `this` 在方法里指向当前 Vue 实例
+                alert('Hello ' + str + '---' + this.msg + '!')
+                // `event` 是原生 DOM 事件
+                if (event) {
+                    alert(event.target.tagName)
+                }
+            },
+            clicknow: function(e) {
+                console.log(e)
+            }
+        }
+        var components = {
+            'test-component1' : {
+                template: "<h3>test-component1</h3>"
+            }
+        }
+        // 定义一个名为 button-counter 的新组件
+        Vue.component('button-counter', {
+            props: ['title'],
+            //一个组件的 data 选项必须是一个函数
+            data: function () {
+                return {
+                    count: 0
+                }
+            },
+            template: '<div><h5>{{title}}</h5><button v-on:click="clickfun">You clicked me {{ count }} times.</button><slot></slot></div>',
+            methods: {
+                clickfun: function() {
+                    this.count++
+                    this.$emit('clicknow', this.count)
+                }
+            }
+        })
+        var app = new Vue({
+            el: '#app',
+            data: data,
+            methods: methods,
+            components: components,
+            beforeCreate: function () {
+                console.log("beforeCreate")
+            },
+            created: function () {
+                console.log("created")
+            },
+            beforeMount: function () {
+                console.log("beforeMount")
+            },
+            mounted: function () {
+                console.log("mounted")
+            },
+            beforeDestory: function () {
+                console.log("beforeDestory")
+            },
+            destoryed: function () {
+                console.log("destoryed")
+            },
+            beforeUpdate: function () {
+                console.log("beforeUpdate")
+            },
+            updated: function () {
+                console.log("updated")
+            },
+        })
+        app.$watch('a', (newVal, oldVal) => {
+            console.log("change", newVal, oldVal)
+        })
+        app.a = 2
+        app.b = 3
+        app.msg = "changed"
+    </script>
+    <style type="text/css">
+        .red {
+            color: red;
+        }
+
+        .blue {
+            color: blue;
+            font-size: medium;
+        }
+
+        .green {
+            color: green;
+        }
+
+        .active {
+            background: red;
+        }
+
+        .test {
+            font-size: 10px;
+        }
+    </style>
+</body>
+
+</html>
