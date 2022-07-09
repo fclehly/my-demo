@@ -1,0 +1,3 @@
+[submodule "my-demo-cpp-demo"]
+	path = my-demo-cpp-demo
+	url = git@github.com:fclehly/my-demo-cpp-demo.git
