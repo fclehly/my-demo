@@ -1,0 +1,5 @@
+.vscode
+*.o
+*.pyc
+.editorconfig
+my-demo-cpp-demo
